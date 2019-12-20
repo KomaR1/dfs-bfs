@@ -1,0 +1,42 @@
+import collections
+def apvs(graph, start):
+    Y, X = set(), collections.deque([start])
+    Y.add(start)
+    while X:
+        start = X.popleft()
+        for next in graph[start]:
+            if next not in Y:
+                Y.add(next)
+                X.append(next)
+        print(start)
+
+def apvg(graph, start, Y=None):
+
+    if Y is None:
+        Y = set()
+        Y.add(start)
+        print(start)
+    for next in graph[start] - Y:
+        apvg(graph, next, Y)
+
+graph = {'1': set(['2', '3']),
+         '2': set(['1', '4']),
+         '3': set(['1', '6']),
+         '4': set(['2', '5']),
+         '5': set(['4', '6']),
+	     '6': set(['5', '3'])}
+
+while True:
+    n = input("Выберите алгоритм поиска: 1 - в глубину, 2 - в ширину\n")
+    if n == "1":
+        print("Поиск в глубину: \n")
+        apvg(graph, '1')
+        print("Для выхода из программы введите - 0\n")
+    elif n == "2":
+        print("Поиск в ширину: \n")
+        apvs(graph, '1')
+        print("Для выхода из программы введите - 0\n")
+    elif n == "0":
+        break
+    else:
+        print("Вы ввели некорректное число")
